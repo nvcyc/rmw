@@ -854,6 +854,44 @@ rmw_publisher_wait_for_all_acked(
   const rmw_publisher_t * publisher,
   rmw_time_t wait_timeout);
 
+/// Get information about matched subscriptions including their locality.
+/**
+ * Query the publisher for information about its currently matched subscriptions,
+ * including each subscription's GID and locality relative to the publisher.
+ * This enables optimizations such as zero-copy intra-process communication.
+ *
+ * The caller is responsible for deallocating the returned array using the provided allocator.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] publisher handle to the publisher to query
+ * \param[in] allocator allocator to use for the returned array
+ * \param[out] endpoints pointer to store the allocated array of matched endpoint info
+ * \param[out] count pointer to store the number of matched endpoints
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any argument is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw implementation does not support locality detection, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_get_matched_endpoints_info(
+  const rmw_publisher_t * publisher,
+  rcutils_allocator_t * allocator,
+  rmw_matched_endpoint_info_t ** endpoints,
+  size_t * count);
+
 /// Serialize a ROS message into a rmw_serialized_message_t.
 /**
  * The ROS message is serialized into a byte stream contained within the

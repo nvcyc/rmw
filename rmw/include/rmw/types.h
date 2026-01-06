@@ -628,6 +628,33 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_s
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
+/// Endpoint locality enumeration
+/// Describes the relative location of a matched endpoint for optimization purposes.
+typedef enum RMW_PUBLIC_TYPE rmw_endpoint_locality_e
+{
+  /// Locality cannot be determined or RMW doesn't support locality detection
+  RMW_ENDPOINT_LOCALITY_UNDEFINED = 0,
+
+  /// Endpoint is in the same process (zero-copy possible)
+  RMW_ENDPOINT_LOCALITY_INTRA_PROCESS,
+
+  /// Endpoint is on the same host but different process (shared memory possible)
+  RMW_ENDPOINT_LOCALITY_INTER_PROCESS_SAME_HOST,
+
+  /// Endpoint is on a different host (network required)
+  RMW_ENDPOINT_LOCALITY_INTER_HOST
+} rmw_endpoint_locality_t;
+
+/// Information about a matched endpoint including its locality
+typedef struct RMW_PUBLIC_TYPE rmw_matched_endpoint_info_s
+{
+  /// Global identifier of the matched endpoint
+  rmw_gid_t gid;
+
+  /// Locality of the matched endpoint relative to the querying endpoint
+  rmw_endpoint_locality_t locality;
+} rmw_matched_endpoint_info_t;
+
 #define RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED UINT64_MAX
 
 /// Information describing an rmw message
