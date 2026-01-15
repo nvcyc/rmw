@@ -36,7 +36,6 @@ set(rmw_sources
   "src/names_and_types.c"
   "src/network_flow_endpoint_array.c"
   "src/network_flow_endpoint.c"
-  "src/publisher_locality.c"
   "src/publisher_options.c"
   "src/qos_string_conversions.c"
   "src/sanity_checks.c"
