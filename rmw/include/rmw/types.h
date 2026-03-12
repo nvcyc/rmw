@@ -187,8 +187,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_s
 
   /// Comma-separated list of acceptable buffer backend names for this endpoint.
   /**
-   * NULL or empty string means all installed backends are acceptable (default).
-   * e.g. "cpu" restricts to CPU-only; "cuda,demo" accepts CUDA and demo backends.
+   * NULL, empty string, or "cpu" all mean CPU-only (default for backward compat).
+   * "any" means all installed backends are acceptable.
+   * Comma-separated for specific backends, e.g. "cuda,demo".
    * CPU is always implicitly acceptable regardless of this value.
    * The RMW will validate that each specified backend is installed and will
    * report an error if any are not available.
